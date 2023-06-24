@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectFilter } from '../../redux/filter/filterSelectors'
-import { setFilter } from '../../redux/filter/filterSlice'
+import { selectFilter } from '../../redux/filter/selectors'
+import { setFilter } from '../../redux/filter/slice'
 import { Input, Text } from '@chakra-ui/react'
 
 const Filter = () => {

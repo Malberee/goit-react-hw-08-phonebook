@@ -1,14 +1,23 @@
 import { useState } from 'react'
-import { FaPhone, FaUser } from 'react-icons/fa'
-import { addContact } from '../../redux/contacts/contactsOperations'
-import { selectContacts } from '../../redux/contacts/contactsSelectors'
-import { Form, FormIcon } from './ContactForm.styled'
-import { Input, Button } from '@chakra-ui/react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { FaPhone, FaUser } from 'react-icons/fa'
+import { addContact } from '../../redux/contacts/operations'
+import { selectContacts } from '../../redux/contacts/selectors'
+import { selectIsLoggedIn } from '../../redux/auth/selectors'
+import {
+	Input,
+	InputLeftElement,
+	FormControl,
+	InputGroup,
+	Button,
+} from '@chakra-ui/react'
 const ContactForm = () => {
 	const dispatch = useDispatch()
+	const navigate = useNavigate()
 
 	const contacts = useSelector(selectContacts)
+	const isLoggedIn = useSelector(selectIsLoggedIn)
 
 	const [name, setName] = useState('')
 	const [number, setNumber] = useState('')
@@ -22,28 +31,32 @@ const ContactForm = () => {
 	const onSubmit = (e) => {
 		e.preventDefault()
 
-		const alreadyExists = contacts.some(
-			(contact) => contact.name.toLowerCase() === name.toLowerCase()
-		)
+		if (isLoggedIn) {
+			const alreadyExists = contacts.some(
+				(contact) => contact.name.toLowerCase() === name.toLowerCase()
+			)
 
-		if (alreadyExists) {
-			alert(`${name} is already in contacts`)
-			return
+			if (alreadyExists) {
+				alert(`${name} is already in contacts`)
+				return
+			}
+			dispatch(addContact({ name: name, number: number }))
+		} else {
+			navigate('/login', { replace: true })
 		}
-		dispatch(addContact({ name: name, number: number }))
 
 		setName('')
 		setNumber('')
 	}
 
 	return (
-		<Form onSubmit={onSubmit}>
-			<label>
-				<FormIcon>
+		<FormControl as="form" onSubmit={onSubmit}>
+			<InputGroup mt="20px">
+				<InputLeftElement>
 					<FaUser />
-				</FormIcon>
-				Name
+				</InputLeftElement>
 				<Input
+					placeholder='Name'
 					type="text"
 					name="name"
 					pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -52,13 +65,13 @@ const ContactForm = () => {
 					value={name}
 					onChange={onChange}
 				/>
-			</label>
-			<label>
-				<FormIcon>
+			</InputGroup>
+			<InputGroup mt="10px">
+				<InputLeftElement>
 					<FaPhone />
-				</FormIcon>
-				Number
+				</InputLeftElement>
 				<Input
+					placeholder='Number'
 					type="tel"
 					name="number"
 					pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
@@ -67,9 +80,11 @@ const ContactForm = () => {
 					value={number}
 					onChange={onChange}
 				/>
-			</label>
-			<Button type="submit" colorScheme='blue'>Add contact</Button>
-		</Form>
+			</InputGroup>
+			<Button type="submit" colorScheme="blue" mt="10px" w="100%">
+				Add contact
+			</Button>
+		</FormControl>
 	)
 }
 

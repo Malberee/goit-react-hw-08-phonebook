@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link as RouteLink } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { logIn } from '../../redux/auth/authOperations'
+import { logIn } from '../../redux/auth/operations'
 import {
 	VStack,
 	Heading,
@@ -41,9 +41,9 @@ const Login = () => {
 		e.preventDefault()
 
 		dispatch(logIn({ email, password }))
-		// setEmail('')
-		// setPassword('')
-		// e.currentTarget.reset()
+		setEmail('')
+		setPassword('')
+		e.currentTarget.reset()
 	}
 
 	const handleToggleShowPassword = () => setIsShowPassword(!isShowPassword)
@@ -52,7 +52,7 @@ const Login = () => {
 		<VStack spacing="15px" display="flex" justifyContent="center" h="100vw">
 			<Heading>Log In</Heading>
 
-			<FormControl onSubmit={handleSubmit} as="form">
+			<FormControl onSubmit={handleSubmit} as="form" w="350px">
 				<InputGroup>
 					<InputLeftElement>
 						<EmailIcon color="gray.400" />
@@ -60,6 +60,7 @@ const Login = () => {
 					<Input
 						placeholder="E-mail address"
 						name="email"
+						type="email"
 						onChange={handleChange}
 					/>
 				</InputGroup>

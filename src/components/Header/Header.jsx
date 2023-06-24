@@ -1,42 +1,36 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { logOut } from '../../redux/auth/operations'
+import { selectIsLoggedIn, selectUserEmail } from '../../redux/auth/selectors'
+import UserMenu from '../UserMenu'
 import {
 	Box,
 	Flex,
-	Button,
 	IconButton,
-	Text,
-	Popover,
-	PopoverTrigger,
-	PopoverContent,
+	useColorMode,
 } from '@chakra-ui/react'
-import { AtSignIcon, HamburgerIcon, MoonIcon, SunIcon } from '@chakra-ui/icons'
+import { Link } from 'react-router-dom'
+import { MoonIcon, SunIcon } from '@chakra-ui/icons'
+import { AiFillHome } from 'react-icons/ai'
 
 const Header = () => {
-	const handleLogout = () => {
-		console.log('Log out сделай, не забудь')
-	}
+
+	const { colorMode, toggleColorMode } = useColorMode()
 
 	return (
-	<Box as="header" padding="10px" w="100vh">
-		<Flex justifyContent="space-between">
-			<IconButton icon={<MoonIcon/>} >Theme</IconButton>
-			<Popover>
-				<PopoverTrigger>
-					<IconButton icon={<HamburgerIcon/>} />
-				</PopoverTrigger>
-				<PopoverContent
-					textAlign="left"
-					padding="10px"
-				>
-					<Text mb="10px">
-						<AtSignIcon mr="5px" />
-						E-mail address
-					</Text>
-					<Button icon={HamburgerIcon} colorScheme="green" onClick={handleLogout}>Log Out</Button>
-				</PopoverContent>
-			</Popover>
-		</Flex>
-	</Box>
-)}
+		<Box as="header" padding="10px" w="100vw">
+			<Flex justifyContent="space-between">
+				<IconButton as={Link} to="/" icon={<AiFillHome />} />
+				<Flex gap="10px">
+					<IconButton
+						icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+						onClick={toggleColorMode}
+					/>
+					<UserMenu />
+				</Flex>
+			</Flex>
+		</Box>
+	)
+}
 
 export default Header

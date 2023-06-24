@@ -1,17 +1,47 @@
 import { Routes, Route } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { lazy, Suspense, useEffect } from 'react'
+import { getCurrentUser } from '../redux/auth/operations'
 import './App.scss'
-import Contacts from '../pages/Contacts'
-import Login from '../pages/Login'
-import Register from '../pages/Register'
-
+import PrivateRoute from './PrivateRoute'
+import RestrictedRoute from './RestrictedRoute'
+import SharedLayout from './SharedLayout/SharedLayout'
+const Contacts = lazy(() => import('../pages/Contacts'))
+const Home = lazy(() => import('../pages/Home'))
+const Login = lazy(() => import('../pages/Login'))
+const Register = lazy(() => import('../pages/Register'))
 
 const App = () => {
+	const dispatch = useDispatch()
+
+	useEffect(() => {
+		dispatch(getCurrentUser())
+	}, [dispatch])
+
 	return (
-		<Routes>
-			<Route path="/" element={<Contacts />} />
-			<Route path="/login" element={<Login />} />
-			<Route path="/register" element={<Register />} />
-		</Routes>
+		<Suspense>
+			<Routes>
+				<Route path="/" element={<SharedLayout />}>
+					<Route index element={<Home />} />
+					<Route
+						path="/login"
+						element={<RestrictedRoute redirectTo="/" component={<Login />} />}
+					/>
+					<Route
+						path="/register"
+						element={
+							<RestrictedRoute redirectTo="/" component={<Register />} />
+						}
+					/>
+						<Route
+							path="/contacts"
+							element={
+								<PrivateRoute redirectTo="/login" component={<Contacts />} />
+							}
+						/>
+				</Route>
+			</Routes>
+		</Suspense>
 	)
 }
 

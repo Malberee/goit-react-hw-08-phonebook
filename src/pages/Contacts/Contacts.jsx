@@ -1,8 +1,11 @@
 import { useEffect } from 'react'
 import { Box, Heading, VStack, Divider } from '@chakra-ui/react'
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchContacts } from '../../redux/contacts/contactsOperations'
-import { selectContacts } from '../../redux/contacts/contactsSelectors'
+import { fetchContacts } from '../../redux/contacts/operations'
+import { selectContacts } from '../../redux/contacts/selectors'
+import { selectIsLoggedIn } from '../../redux/auth/selectors'
+import { Text, Link } from '@chakra-ui/react'
+import { Link as RouteLink } from 'react-router-dom'
 import Header from '../../components/Header'
 import ContactForm from '../../components/ContactForm'
 import ContactList from '../../components/ContactList'
@@ -19,8 +22,7 @@ const Contacts = () => {
 
 	return (
 		<>
-			<Header />
-			<VStack  >
+			<VStack>
 				<Box as="section" w="350px">
 					<Heading>Phonebook</Heading>
 					<ContactForm />
@@ -34,7 +36,7 @@ const Contacts = () => {
 							<ContactList contacts={contacts} />
 						</>
 					) : (
-						<p>Not found</p>
+						<p>Empty</p>
 					)}
 				</Box>
 			</VStack>

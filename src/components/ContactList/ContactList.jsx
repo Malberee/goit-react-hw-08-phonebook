@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteContact } from '../../redux/contacts/contactsOperations'
+import { deleteContact } from '../../redux/contacts/operations'
 import { DeleteIcon } from '@chakra-ui/icons'
-import {selectFilteredContacts} from '../../redux/filter/filterSelectors'
+import {selectFilteredContacts} from '../../redux/filter/selectors'
 import {
 	selectError,
 	selectIsLoading,
-} from '../../redux/contacts/contactsSelectors'
+} from '../../redux/contacts/selectors'
 import { VStack, Box, IconButton } from '@chakra-ui/react'
 
 const ContactList = () => {
@@ -18,7 +18,7 @@ const ContactList = () => {
 	return (
 		<>
 			{isLoading && <p>Loading...</p>}
-			{error && <p>{console.log(error)}</p>}
+			{error && <p>error</p>}
 			{!isLoading && !error && filteredContacts.length < 1 && (
 				<p>Ничё не нашли</p>
 			)}
@@ -34,13 +34,15 @@ const ContactList = () => {
 								justifyContent="space-between"
 								padding="10px"
 								borderRadius="md"
-								bg="gray.100"
+								bgColor="blackAlpha.200"
 								alignItems="center"
 							>
 								<p>{name}</p>
 								<p>{number}</p>
 								<IconButton
 									aria-label="Delete contact"
+									colorScheme="red"
+									variant="ghost"
 									icon={<DeleteIcon />}
 									onClick={() => dispatch(deleteContact(id))}
 								/>
