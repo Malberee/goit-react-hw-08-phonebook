@@ -25,7 +25,7 @@ const App = () => {
 	return (
 		!isRefreshing && (
 			<>
-				<Suspense>
+				<Suspense fallback={<p>Loading...</p>}>
 					<Routes>
 						<Route path="/" element={<SharedLayout />}>
 							<Route index element={<Home />} />
