@@ -66,7 +66,6 @@ const Register = () => {
 			display="flex"
 			justifyContent="center"
 			alignItems="center"
-			h="100%"
 			onSubmit={formik.handleSubmit}
 		>
 			<Box w="300px">
