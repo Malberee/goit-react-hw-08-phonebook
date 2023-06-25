@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useAuth } from '../hooks/useAuth'
 import { lazy, Suspense, useEffect } from 'react'
@@ -32,7 +32,10 @@ const App = () => {
 							<Route
 								path="/login"
 								element={
-									<RestrictedRoute redirectTo="/contacts" component={<Login />} />
+									<RestrictedRoute
+										redirectTo="/contacts"
+										component={<Login />}
+									/>
 								}
 							/>
 							<Route
@@ -50,10 +53,11 @@ const App = () => {
 									<PrivateRoute redirectTo="/login" component={<Contacts />} />
 								}
 							/>
+							<Route path="*" element={<Navigate to="/" />} />
 						</Route>
 					</Routes>
 				</Suspense>
-				<ToastContainer/>
+				<ToastContainer />
 			</>
 		)
 	)
