@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { toast } from 'react-toastify'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { FaPhone, FaUser } from 'react-icons/fa'
@@ -37,7 +38,9 @@ const ContactForm = () => {
 			)
 
 			if (alreadyExists) {
-				alert(`${name} is already in contacts`)
+				toast.warning(`${name} is already in contacts`, {
+					position: 'bottom-center'
+				})
 				return
 			}
 			dispatch(addContact({ name: name, number: number }))

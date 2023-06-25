@@ -57,7 +57,6 @@ export const getCurrentUser = createAsyncThunk(
 
 		try {
 			const { data } = await axios.get('/users/current')
-			console.log(data)
 			return data
 		} catch (err) {
 			return thunkAPI.rejectWithValue(err.message)
