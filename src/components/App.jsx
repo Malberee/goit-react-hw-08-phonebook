@@ -8,14 +8,10 @@ import './App.scss'
 import PrivateRoute from './PrivateRoute'
 import RestrictedRoute from './RestrictedRoute'
 import SharedLayout from './SharedLayout'
-// const Login = lazy(() => import('../pages/Login'))
-// const Register = lazy(() => import('../pages/Register'))
-// const Contacts = lazy(() => import('../pages/Contacts'))
-// const Home = lazy(() => import('../pages/Home'))
-import Login from '../pages/Login'
-import Register from '../pages/Register'
-import Contacts from '../pages/Contacts'
-import Home from '../pages/Home'
+const Login = lazy(() => import('../pages/Login'))
+const Register = lazy(() => import('../pages/Register'))
+const Contacts = lazy(() => import('../pages/Contacts'))
+const Home = lazy(() => import('../pages/Home'))
 
 const App = () => {
 	const dispatch = useDispatch()
