@@ -18,19 +18,27 @@ const authSlice = createSlice({
 			state.user = action.payload.user
 			state.token = action.payload.token
 			state.isLoggedIn = true
-			toast.success('You are successfully logged in')
+			toast.success('You are successfully logged in', {
+				position: 'bottom-center',
+			})
 		},
 		[register.rejected]() {
-			toast.error('Something went wrong, try again later')
+			toast.error('Something went wrong, try again later', {
+				position: 'bottom-center',
+			})
 		},
 		[login.fulfilled](state, action) {
 			state.user = action.payload.user
 			state.token = action.payload.token
 			state.isLoggedIn = true
-			toast.success('You are successfully logged in')
+			toast.success('You are successfully logged in', {
+				position: 'bottom-center',
+			})
 		},
 		[login.rejected]() {
-			toast.error('Wrong e-mail or password')
+			toast.error('Wrong e-mail or password', {
+				position: 'bottom-center',
+			})
 		},
 		[logout.fulfilled](state, _) {
 			state.user = { name: null, email: null }

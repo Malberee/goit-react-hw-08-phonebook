@@ -66,7 +66,7 @@ const Register = () => {
 			display="flex"
 			justifyContent="center"
 			alignItems="center"
-			h="container.md"
+			h="100%"
 			onSubmit={formik.handleSubmit}
 		>
 			<Box w="300px">
@@ -139,7 +139,7 @@ const Register = () => {
 				<Text mt="10px">
 					Already have account?{' '}
 					<Link to="/login" as={RouteLink} color="#2b6cb0">
-					Log In
+						Log In
 					</Link>
 				</Text>
 			</Box>

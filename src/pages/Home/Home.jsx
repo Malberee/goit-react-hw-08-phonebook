@@ -19,7 +19,7 @@ const Home = () => {
 			) : (
 				<Text>
 					<Link as={RouteLink} to="/login" color="#2b6cb0">
-						login
+						Log In
 					</Link>{' '}
 					or{' '}
 					<Link as={RouteLink} to="/register" color="#2b6cb0">
