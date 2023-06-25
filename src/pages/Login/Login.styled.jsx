@@ -1,5 +1,3 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
-export const LoginWrapper = styled.div`
-
-`;
+export const loginWrapper = styled.div``

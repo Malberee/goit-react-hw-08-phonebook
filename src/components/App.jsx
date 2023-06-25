@@ -1,6 +1,8 @@
 import { Routes, Route } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import { useAuth } from '../hooks/useAuth'
 import { lazy, Suspense, useEffect } from 'react'
+import { ToastContainer } from 'react-toastify'
 import { getCurrentUser } from '../redux/auth/operations'
 import './App.scss'
 import PrivateRoute from './PrivateRoute'
@@ -14,34 +16,46 @@ const Register = lazy(() => import('../pages/Register'))
 const App = () => {
 	const dispatch = useDispatch()
 
+	const { isRefreshing } = useAuth()
+
 	useEffect(() => {
 		dispatch(getCurrentUser())
 	}, [dispatch])
 
 	return (
-		<Suspense>
-			<Routes>
-				<Route path="/" element={<SharedLayout />}>
-					<Route index element={<Home />} />
-					<Route
-						path="/login"
-						element={<RestrictedRoute redirectTo="/" component={<Login />} />}
-					/>
-					<Route
-						path="/register"
-						element={
-							<RestrictedRoute redirectTo="/" component={<Register />} />
-						}
-					/>
-						<Route
-							path="/contacts"
-							element={
-								<PrivateRoute redirectTo="/login" component={<Contacts />} />
-							}
-						/>
-				</Route>
-			</Routes>
-		</Suspense>
+		!isRefreshing && (
+			<>
+				<Suspense>
+					<Routes>
+						<Route path="/" element={<SharedLayout />}>
+							<Route index element={<Home />} />
+							<Route
+								path="/login"
+								element={
+									<RestrictedRoute redirectTo="/contacts" component={<Login />} />
+								}
+							/>
+							<Route
+								path="/register"
+								element={
+									<RestrictedRoute
+										redirectTo="/contacts"
+										component={<Register />}
+									/>
+								}
+							/>
+							<Route
+								path="/contacts"
+								element={
+									<PrivateRoute redirectTo="/login" component={<Contacts />} />
+								}
+							/>
+						</Route>
+					</Routes>
+				</Suspense>
+				<ToastContainer/>
+			</>
+		)
 	)
 }
 

@@ -1,7 +1,4 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { logOut } from '../../redux/auth/operations'
-import { selectIsLoggedIn, selectUserEmail } from '../../redux/auth/selectors'
 import UserMenu from '../UserMenu'
 import {
 	Box,
@@ -9,9 +6,8 @@ import {
 	IconButton,
 	useColorMode,
 } from '@chakra-ui/react'
-import { Link } from 'react-router-dom'
 import { MoonIcon, SunIcon } from '@chakra-ui/icons'
-import { AiFillHome } from 'react-icons/ai'
+import Navigation from '../Navigation'
 
 const Header = () => {
 
@@ -20,7 +16,7 @@ const Header = () => {
 	return (
 		<Box as="header" padding="10px" w="100vw">
 			<Flex justifyContent="space-between">
-				<IconButton as={Link} to="/" icon={<AiFillHome />} />
+				<Flex gap="10px"><Navigation/></Flex>
 				<Flex gap="10px">
 					<IconButton
 						icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}

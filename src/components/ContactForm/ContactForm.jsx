@@ -56,7 +56,7 @@ const ContactForm = () => {
 					<FaUser />
 				</InputLeftElement>
 				<Input
-					placeholder='Name'
+					placeholder="Name"
 					type="text"
 					name="name"
 					pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -71,7 +71,7 @@ const ContactForm = () => {
 					<FaPhone />
 				</InputLeftElement>
 				<Input
-					placeholder='Number'
+					placeholder="Number"
 					type="tel"
 					name="number"
 					pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"

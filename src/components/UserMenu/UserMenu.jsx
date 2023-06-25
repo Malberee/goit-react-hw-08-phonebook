@@ -1,7 +1,7 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { logOut } from '../../redux/auth/operations'
-import { selectIsLoggedIn, selectUserEmail } from '../../redux/auth/selectors'
+import { useDispatch } from 'react-redux'
+import { logout } from '../../redux/auth/operations'
+import { useAuth } from '../../hooks/useAuth'
 import {
 	Box,
 	Flex,
@@ -19,46 +19,44 @@ import { AtSignIcon, HamburgerIcon } from '@chakra-ui/icons'
 const UserMenu = () => {
 	const dispatch = useDispatch()
 
-	const userEmail = useSelector(selectUserEmail)
-	const isLoggedIn = useSelector(selectIsLoggedIn)
+	const { user, isLoggedIn } = useAuth()
 
-
-	const handleLogout = () => {
-		dispatch(logOut())
+	const handlelogout = () => {
+		dispatch(logout())
 	}
 
 	return (
-			<Popover>
-				<PopoverTrigger>
-					<IconButton icon={<HamburgerIcon />} />
-				</PopoverTrigger>
-				<PopoverContent textAlign="left" padding="10px">
-					{isLoggedIn ? (
-						<>
-							<Text mb="10px">
-								<AtSignIcon mr="5px" />
-								{userEmail}
-							</Text>
-							<Button
-								icon={HamburgerIcon}
-								colorScheme="red"
-								onClick={handleLogout}
-							>
-								Log Out
-							</Button>
-						</>
-					) : (
-						<>
-							<Button as={Link} to="/login" colorScheme="blue">
-								Log In
-							</Button>
-							<Button as={Link} to="/register" colorScheme="green" mt="10px">
-								Sign Up
-							</Button>
-						</>
-					)}
-				</PopoverContent>
-			</Popover>
+		<Popover>
+			<PopoverTrigger>
+				<IconButton icon={<HamburgerIcon />} />
+			</PopoverTrigger>
+			<PopoverContent textAlign="left" padding="10px">
+				{isLoggedIn ? (
+					<>
+						<Text mb="10px">
+							<AtSignIcon mr="5px" />
+							{user.email}
+						</Text>
+						<Button
+							icon={HamburgerIcon}
+							colorScheme="red"
+							onClick={handlelogout}
+						>
+							Log Out
+						</Button>
+					</>
+				) : (
+					<>
+						<Button as={Link} to="/login" colorScheme="blue">
+							Log In
+						</Button>
+						<Button as={Link} to="/register" colorScheme="green" mt="10px">
+							Sign Up
+						</Button>
+					</>
+				)}
+			</PopoverContent>
+		</Popover>
 	)
 }
 

@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Link as RouteLink } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { logIn } from '../../redux/auth/operations'
+import { login } from '../../redux/auth/operations'
 import {
-	VStack,
+	Box,
 	Heading,
 	InputGroup,
 	Input,
@@ -14,94 +14,107 @@ import {
 	Button,
 	Text,
 	Link,
+	FormErrorMessage,
+	FormLabel,
 } from '@chakra-ui/react'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
 import { ViewIcon, ViewOffIcon, EmailIcon, LockIcon } from '@chakra-ui/icons'
 
 const Login = () => {
 	const dispatch = useDispatch()
 
-	const [isShowPassword, setIsShowPassword] = useState(false)
-	const [email, setEmail] = useState('')
-	const [password, setPassword] = useState('')
+	const [isVisiblePassword, setIsVisiblePassword] = useState(false)
 
-	const handleChange = ({ target: { name, value } }) => {
-		switch (name) {
-			case 'email':
-				setEmail(value)
-				break
-			case 'password':
-				setPassword(value)
-				break
-			default:
-				break
-		}
-	}
+	const formik = useFormik({
+		initialValues: {
+			email: '',
+			password: '',
+		},
+		validationSchema: Yup.object({
+			email: Yup.string().email().required('Email required'),
+			password: Yup.string()
+				.required('Password required')
+				.min(8, 'Password is too short'),
+		}),
+		onSubmit: (values, actions) => {
+			try {
+				dispatch(login(values))
+			} catch (err) {
+				console.log('text')
+			}
+			actions.resetForm()
+		},
+	})
 
-	const handleSubmit = (e) => {
-		e.preventDefault()
-
-		dispatch(logIn({ email, password }))
-		setEmail('')
-		setPassword('')
-		e.currentTarget.reset()
-	}
-
-	const handleToggleShowPassword = () => setIsShowPassword(!isShowPassword)
+	const toggleVisiblePassword = () => setIsVisiblePassword(!isVisiblePassword)
 
 	return (
-		<VStack spacing="15px" display="flex" justifyContent="center" h="100vw">
-			<Heading>Log In</Heading>
+		<Box
+			as="form"
+			display="flex"
+			justifyContent="center"
+			alignItems="center"
+			h="container.md"
+			onSubmit={formik.handleSubmit}
+		>
+			<Box w="300px">
+				<Heading>Log In</Heading>
 
-			<FormControl onSubmit={handleSubmit} as="form" w="350px">
-				<InputGroup>
-					<InputLeftElement>
-						<EmailIcon color="gray.400" />
-					</InputLeftElement>
-					<Input
-						placeholder="E-mail address"
-						name="email"
-						type="email"
-						onChange={handleChange}
-					/>
-				</InputGroup>
-
-				<InputGroup mt="15px">
-					<InputLeftElement>
-						<LockIcon color="gray.400" />
-					</InputLeftElement>
-					<Input
-						placeholder="Password"
-						type={isShowPassword ? 'text' : 'password'}
-						name="password"
-						onChange={handleChange}
-					/>
-					<InputRightElement>
-						<IconButton
-							variant="unstyled"
-							aria-label="Show/Hide password"
-							icon={
-								isShowPassword ? (
-									<ViewIcon color="gray.400" />
-								) : (
-									<ViewOffIcon color="gray.400" />
-								)
-							}
-							onClick={handleToggleShowPassword}
+				<FormControl isInvalid={formik.errors.email && formik.touched.email}>
+					<FormLabel mb="2px">E-mail</FormLabel>
+					<InputGroup>
+						<InputLeftElement>
+							<EmailIcon />
+						</InputLeftElement>
+						<Input
+							name="email"
+							placeholder="Enter e-mail"
+							{...formik.getFieldProps('email')}
 						/>
-					</InputRightElement>
-				</InputGroup>
-				<Button w="100%" colorScheme="blue" mt="15px" type="submit">
+					</InputGroup>
+					<FormErrorMessage>{formik.errors.email}</FormErrorMessage>
+				</FormControl>
+
+				<FormControl
+					mt="10px"
+					isInvalid={formik.errors.password && formik.touched.password}
+				>
+					<FormLabel mb="2px">Password</FormLabel>
+					<InputGroup>
+						<InputLeftElement>
+							<LockIcon />
+						</InputLeftElement>
+						<Input
+							name="password"
+							placeholder="Enter password"
+							type={isVisiblePassword ? 'text' : 'password'}
+							{...formik.getFieldProps('password')}
+						/>
+						<InputRightElement>
+							<IconButton
+								variant="flushed"
+								type="button"
+								icon={isVisiblePassword ? <ViewIcon /> : <ViewOffIcon />}
+								onClick={toggleVisiblePassword}
+							/>
+						</InputRightElement>
+					</InputGroup>
+					<FormErrorMessage>{formik.errors.password}</FormErrorMessage>
+				</FormControl>
+
+				<Button type="submit" colorScheme="blue" mt="10px" w="100%">
 					Submit
 				</Button>
-			</FormControl>
 
-			<Text textAlign="right">
-				Don't have account?{' '}
-				<Link to="/register" as={RouteLink} color="#2b6cb0">
-					Create account
-				</Link>
-			</Text>
-		</VStack>
+				<Text mt="10px">
+					Don't have account?{' '}
+					<Link to="/register" as={RouteLink} color="#2b6cb0">
+						Create account
+					</Link>
+				</Text>
+			</Box>
+		</Box>
 	)
 }
 

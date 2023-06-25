@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { register, logIn, logOut, getCurrentUser } from './operations'
+import 'react-toastify/dist/ReactToastify.css'
+import { toast } from 'react-toastify'
+import { register, login, logout, getCurrentUser } from './operations'
 
 const initialState = {
 	user: { name: null, email: null },
 	token: null,
 	isLoggedIn: false,
-	isRefreshing: false
+	isRefreshing: false,
 }
 
 const authSlice = createSlice({
@@ -16,13 +18,21 @@ const authSlice = createSlice({
 			state.user = action.payload.user
 			state.token = action.payload.token
 			state.isLoggedIn = true
+			toast.success('You are successfully logged in')
 		},
-		[logIn.fulfilled](state, action) {
+		[register.rejected]() {
+			toast.error('Something went wrong, try again later')
+		},
+		[login.fulfilled](state, action) {
 			state.user = action.payload.user
 			state.token = action.payload.token
 			state.isLoggedIn = true
+			toast.success('You are successfully logged in')
 		},
-		[logOut.fulfilled](state, _) {
+		[login.rejected]() {
+			toast.error('Wrong e-mail or password')
+		},
+		[logout.fulfilled](state, _) {
 			state.user = { name: null, email: null }
 			state.token = null
 			state.isLoggedIn = false
@@ -37,7 +47,7 @@ const authSlice = createSlice({
 		},
 		[getCurrentUser.rejected](state, _) {
 			state.isRefreshing = false
-		}
+		},
 	},
 })
 
