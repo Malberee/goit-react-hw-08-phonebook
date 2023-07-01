@@ -4,6 +4,7 @@ import { useAuth } from '../hooks/useAuth'
 import { lazy, Suspense, useEffect } from 'react'
 import { ToastContainer } from 'react-toastify'
 import { getCurrentUser } from '../redux/auth/operations'
+import { useColorMode } from '@chakra-ui/react'
 import './App.scss'
 import PrivateRoute from './PrivateRoute'
 import RestrictedRoute from './RestrictedRoute'
@@ -16,6 +17,7 @@ const Home = lazy(() => import('../pages/Home'))
 const App = () => {
 	const dispatch = useDispatch()
 
+	const { colorMode, toggleColorMode } = useColorMode()
 	const { isRefreshing } = useAuth()
 
 	useEffect(() => {
@@ -32,32 +34,24 @@ const App = () => {
 							<Route
 								path="/login"
 								element={
-									<RestrictedRoute
-										redirectTo="/contacts"
-										component={<Login />}
-									/>
+									<RestrictedRoute redirectTo="/contacts" component={<Login />} />
 								}
 							/>
 							<Route
 								path="/register"
 								element={
-									<RestrictedRoute
-										redirectTo="/contacts"
-										component={<Register />}
-									/>
+									<RestrictedRoute redirectTo="/contacts" component={<Register />} />
 								}
 							/>
 							<Route
 								path="/contacts"
-								element={
-									<PrivateRoute redirectTo="/login" component={<Contacts />} />
-								}
+								element={<PrivateRoute redirectTo="/login" component={<Contacts />} />}
 							/>
 							<Route path="*" element={<Navigate to="/" />} />
 						</Route>
 					</Routes>
 				</Suspense>
-				<ToastContainer />
+				<ToastContainer position="bottom-center" theme={colorMode} />
 			</>
 		)
 	)

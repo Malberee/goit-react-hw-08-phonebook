@@ -22,7 +22,7 @@ const Filter = () => {
 				value={filter}
 				onChange={onFilterChange}
 				mb="15px"
-				w="360px"
+				w="100%"
 			/>
 		</>
 	)
