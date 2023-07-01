@@ -39,18 +39,17 @@ const handleSuccessDeleteContact = (state, action) => ({
 const contactsSlice = createSlice({
 	name: 'contacts',
 	initialState,
-	extraReducers: {
-		[fetchContacts.pending]: handlePending,
-		[fetchContacts.fulfilled]: handleSuccessFetchContacts,
-		[fetchContacts.rejected]: handleRejected,
-
-		[addContact.pending]: handlePending,
-		[addContact.fulfilled]: handleSuccessAddContact,
-		[addContact.rejected]: handleRejected,
-
-		[deleteContact.pending]: handlePending,
-		[deleteContact.fulfilled]: handleSuccessDeleteContact,
-		[deleteContact.rejected]: handleRejected,
+	extraReducers: (builder) => {
+		builder
+			.addCase(fetchContacts.pending, handlePending)
+			.addCase(fetchContacts.fulfilled, handleSuccessFetchContacts)
+			.addCase(fetchContacts.rejected.handleRejected)
+			.addCase(addContact.pending, handlePending)
+			.addCase(addContact.fulfilled, handleSuccessAddContact)
+			.addCase(addContact.rejected, handleRejected)
+			.addCase(deleteContact.pending, handlePending)
+			.addCase(deleteContact.fulfilled, handleSuccessDeleteContact)
+			.addCase(deleteContact.rejected, handleRejected)
 	},
 })
 
