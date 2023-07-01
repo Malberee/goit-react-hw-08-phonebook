@@ -1,12 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteContact } from '../../redux/contacts/operations'
 import { DeleteIcon } from '@chakra-ui/icons'
-import {selectFilteredContacts} from '../../redux/filter/selectors'
-import {
-	selectError,
-	selectIsLoading,
-} from '../../redux/contacts/selectors'
-import { VStack, Box, IconButton } from '@chakra-ui/react'
+import { selectFilteredContacts } from '../../redux/filter/selectors'
+import { selectError, selectIsLoading } from '../../redux/contacts/selectors'
+import { VStack, Box, IconButton, Spinner, Center } from '@chakra-ui/react'
 
 const ContactList = () => {
 	const dispatch = useDispatch()
@@ -17,11 +14,9 @@ const ContactList = () => {
 
 	return (
 		<>
-			{isLoading && <p>Loading...</p>}
-			{error && <p>error</p>}
-			{!isLoading && !error && filteredContacts.length < 1 && (
-				<p>Ничё не нашли</p>
-			)}
+			{isLoading && <Spinner color="blue.500" />}
+			{error && <p>Error</p>}
+			{!isLoading && !error && filteredContacts.length < 1 && <p>Ничё не нашли</p>}
 			{!isLoading && !error && (
 				<VStack spacing="15px" as="ul">
 					{filteredContacts.map(({ id, name, number }) => {
