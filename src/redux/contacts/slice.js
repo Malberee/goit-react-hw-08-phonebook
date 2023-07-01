@@ -43,7 +43,7 @@ const contactsSlice = createSlice({
 		builder
 			.addCase(fetchContacts.pending, handlePending)
 			.addCase(fetchContacts.fulfilled, handleSuccessFetchContacts)
-			.addCase(fetchContacts.rejected.handleRejected)
+			.addCase(fetchContacts.rejected,handleRejected)
 			.addCase(addContact.pending, handlePending)
 			.addCase(addContact.fulfilled, handleSuccessAddContact)
 			.addCase(addContact.rejected, handleRejected)
